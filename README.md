@@ -1,5 +1,7 @@
 # used_car_analysis
 
+## Link to the Jupyter notebook
+[My Jupyter notebook](https://github.com/jeffhonghou/used_car_analysis/blob/main/prompt_II.ipynb)
 ### Business Understanding
 From a business perspective, we are tasked with identifying key drivers for used car prices.  In the CRISP-DM overview, we are asked to convert this business framing to a data problem definition.  Using a few sentences, reframe the task as a data task with the appropriate technical vocabulary.
 
