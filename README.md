@@ -6,26 +6,28 @@
 From a business perspective, we are tasked with identifying key drivers for used car prices.  In the CRISP-DM overview, we are asked to convert this business framing to a data problem definition.  Using a few sentences, reframe the task as a data task with the appropriate technical vocabulary.
 
 #### Reframed data task
-The objective of this task is to frame a supervised regression problem with the target variable being the price of used cars. Using the provided dataset, we aim to identify which vehicle features, such as year, mileage, manufacturer, condition, and title status, etc., have the most significant influence on pricing. This will be done through statistical analysis and by evaluating feature importance in predictive models. Additionally, we will train and compare several machine learning models, including Linear Regression, Ridge, and Lasso, to accurately predict used car prices based on these key attributes.
-
+- The objective of this task is to frame a supervised regression problem with the target variable being the price of used cars. Using the provided dataset, we aim to identify which vehicle features, such as year, mileage, manufacturer, condition, and title status, etc., have the most significant influence on pricing. This will be done through statistical analysis and by evaluating feature importance in predictive models. Additionally, we will train and compare several machine learning models, including Linear Regression, Ridge, and Lasso, to accurately predict used car prices based on these key attributes.
+##### Research questions
+- Which vehicle features (e.g., year, title status, condition, mileage) have the greatest impact on used car prices?
+- How well can we predict used car prices using this dataset, and what is the model’s expected error?
 
 ### Data Understanding
 After considering the business understanding, we want to get familiar with our data.  Write down some steps that you would take to get to know the dataset and identify any quality issues within.  Take time to get to know the dataset and explore what information it contains and how this could be used to inform your business understanding.
 
 #### Step 1:
-Load the dataset and inspect the structure by viewing column names, data types, and non-null counts.
+- Load the dataset and inspect the structure by viewing column names, data types, and non-null counts.
 #### Step 2:
-Display summary statistics of the dataset to understand the distribution and central tendencies of numerical features.
+- Display summary statistics of the dataset to understand the distribution and central tendencies of numerical features.
 #### Step 3:
-Display the first 5 rows.
+- Display the first 5 rows.
 #### Step 4:
-Display the total missing value percentages per column. 
+- Display the total missing value percentages per column. 
 ##### Step 4.1
-The 'size' column will be dropped due to having more than 70% missing values, which makes it unreliable for analysis. Additionally, based on domain knowledge, the 'VIN' and 'id' columns are unique identifiers and are unlikely to have any meaningful impact on the car’s price. The 'region','model', and 'state' columns are also dropped to avoid large number of columns after applying the One-hot encoding.
+- The 'size' column will be dropped due to having more than 70% missing values, which makes it unreliable for analysis. Additionally, based on domain knowledge, the 'VIN' and 'id' columns are unique identifiers and are unlikely to have any meaningful impact on the car’s price. The 'region','model', and 'state' columns are also dropped to avoid large number of columns after applying the One-hot encoding.
 #### Step 5
-Use plots to detect the potential relationships between each of the numeric features and the price.
+- Use plots to detect the potential relationships between each of the numeric features and the price.
 #### Step 6
-Use plots to detect the potential relationships between each of the non-numeric features and the price.
+- Use plots to detect the potential relationships between each of the non-numeric features and the price.
 
 
 ### Data Preparation
@@ -34,15 +36,17 @@ After our initial exploration and fine-tuning of the business understanding, it 
 - Remove outliers from 'price' column
 - Remove outliers from 'odometer' column
 ##### Other columns
-Based on domain knowledge, the 'manufacturer', 'model', 'condition','title_status', and 'transmission' will affect the price of used cars significantly. However, since there are too many unique values of 'model', here we only include the 'manufacturer','condition','title_status', and 'transmission' columns.
+- Based on domain knowledge, the 'manufacturer', 'model', 'condition','title_status', and 'transmission' will affect the price of used cars significantly. However, since there are too many unique values of 'model', here we only include the 'manufacturer','condition','title_status', and 'transmission' columns.
 
 
 ### Modeling
 With your (almost?) final dataset in hand, it is now time to build some models.  Here, you should build a number of different regression models with the price as the target.  In building your models, you should explore different parameters and be sure to cross-validate your findings.
-##### Linear Regression
-##### Ridge Regression
-##### Lasso Regression
-##### Random Forest
+#### I created the following four models from which to choose the best one. GridSearchCV are used for both Ridge and Lasso regressions, and RandomizedSearchCV was used for Random Forest.
+
+- Linear Regression
+- Ridge Regression
+- Lasso Regression
+- Random Forest
 
 
 ### Evaluation
@@ -66,7 +70,7 @@ With some modeling accomplished, we aim to reflect on what we identify as a high
   - **Notes: Best performer, highly accurate**
 
 ##### Business Objective Recap
-The goal was to **predict used car prices** and **identify main factors that influence pricing**, helping the used car dealers gain insight into vehicle valuation.
+- The goal was to **predict used car prices** and **identify main factors that influence pricing**, helping the used car dealers gain insight into vehicle valuation.
 
 ##### Model Performance
 The **Random Forest Regressor** achieved the best performance with:
@@ -99,7 +103,7 @@ The model reveals that **year and mileage** are the top predictors of price:
 Now that we've settled on our models and findings, it is time to deliver the information to the client.  You should organize your work as a basic report that details your primary findings.  Keep in mind that your audience is a group of used car dealers interested in fine-tuning their inventory.
 
 ##### Objective
-To help used car dealers **better understand what drives car prices**, and make smarter inventory and pricing decisions.
+- To help used car dealers **better understand what drives car prices**, and make smarter inventory and pricing decisions.
 
 ##### Key Insights
 1. **Most Influential Factors on Price:**
