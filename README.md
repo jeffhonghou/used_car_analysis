@@ -21,8 +21,12 @@ After considering the business understanding, we want to get familiar with our d
 - Display the first 5 rows.
 ### Step 4:
 - Display the total missing value percentages per column. 
-#### Step 4.1
-- The 'size' column will be dropped due to having more than 70% missing values, which makes it unreliable for analysis. Additionally, based on domain knowledge, the 'VIN' and 'id' columns are unique identifiers and are unlikely to have any meaningful impact on the car’s price. The 'region','model', and 'state' columns are also dropped to avoid large number of columns after applying the One-hot encoding.
+##### Step 4.1
+- The 'size' column will be dropped due to having more than 70% missing values, which makes it unreliable for analysis. Additionally, based on domain knowledge, the 'id' and 'VIN' columns are unique identifiers and are unlikely to have any meaningful impact on the car’s price. The 'region' and 'model' columns are also dropped since we will have the 'manufacturer' and 'state' columns.
+##### Step 4.2
+- Drop data with 0 price.
+##### Step 4.3
+- Now we replace the missing data using mode.
 ### Step 5
 - Use plots to detect the potential relationships between each of the numeric features and the price.
 ### Step 6
@@ -35,7 +39,7 @@ After our initial exploration and fine-tuning of the business understanding, it 
 - Remove outliers from 'price' column
 - Remove outliers from 'odometer' column
 #### Other columns
-- Based on domain knowledge, the 'manufacturer', 'model', 'condition','title_status', and 'transmission' will affect the price of used cars significantly. However, since there are too many unique values of 'model', here we only include the 'manufacturer','condition','title_status', and 'transmission' columns.
+- Based on domain knowledge, the 'manufacturer', 'model', 'condition','title_status', and 'transmission' will affect the price of used cars significantly. However, since there are too many unique values of 'model' and 'region', here we only include the 'manufacturer', 'condition', 'cylinders', 'fuel', 'title_status', 'transmission','drive','type','paint_color',and 'state' columns.
 
 
 ### Modeling
@@ -49,39 +53,43 @@ With your (almost?) final dataset in hand, it is now time to build some models. 
 
 ### Evaluation
 With some modeling accomplished, we aim to reflect on what we identify as a high-quality model and what we are able to learn from this.  We should review our business objective and explore how well we can provide meaningful insight into drivers of used car prices.  Your goal now is to distill your findings and determine whether the earlier phases need revisitation and adjustment or if you have information of value to bring back to your client.
-#### Here is the comparison table of all above models:
-- **Linear Regression**  
-  - RMSE: $7,477.78  
-  - Notes: Fast, but less accurate  
+Here is the comparison table of all above models:
+Linear Regression
 
-- **Ridge Regression**  
-  - RMSE: $7,477.69  
-  - Notes: Similar to Linear, slightly improved  
+RMSE: $8360.56
+Notes: Fast, but less accurate
+Ridge Regression
 
-- **Lasso Regression**  
-  - RMSE: $7,477.71  
-  - Notes: Time-consuming, minimal improvement  
+RMSE: $8360.61
+Notes: Similar to Linear, slightly improved
+Lasso Regression
 
-- **Random Forest**  
-  - **RMSE: $4,364.67**  
-  - **Notes: Best performer, highly accurate**
+RMSE: $8360.58
+Notes: Time-consuming(~8 minutes), minimal improvement
+Random Forest
+
+RMSE: $4451.24
+Notes: Best performer, highly accurate, Time-consuming (~17 minutes)
 #### Business Objective Recap
-- The goal was to **predict used car prices** and **identify main factors that influence pricing**, helping the used car dealers gain insight into vehicle valuation.
+The goal was to **predict used car prices** and **identify main factors that influence pricing**, helping the used car dealers gain insight into vehicle valuation.
+
 #### Model Performance
 The **Random Forest Regressor** achieved the best performance with:
-- **Test RMSE**: $4,364.67  
+- **Test RMSE**: $4451.24  
 - **Best Parameters**: `n_estimators=50`, `max_features='sqrt'`, `max_depth=None`  
-- This result significantly outperforms linear models such as Linear Regression, Ridge, and Lasso (all around **$7,477 RMSE**), indicating Random Forest is better suited for capturing non-linear patterns in this dataset.
+- This result significantly outperforms linear models such as Linear Regression, Ridge, and Lasso (all around **$8360 RMSE**), indicating Random Forest is better suited for capturing non-linear patterns in this dataset.
+
 #### Feature Importance Insights
 The model reveals that **year and mileage** are the top predictors of price:
-- `year` (importance: 0.239832)
-- `odometer` (importance: 0.236783)
-- `transmission`, `drive`, and `engine cylinders`
-- `fuel` and even `type`, such as sedan, pickup, etc.
+- `year` (importance: 0.245822)
+- `odometer` (importance: 0.223048)
+- `transmission`, `fuel`, `drive`, `engine cylinders`, and even `type`, such as `pickup`, `sedan`,  etc.
+
 #### Interpretation vs. Performance
 - **Random Forest** offers high accuracy but limited interpretability.
 - **Linear models** are more interpretable but underperform in prediction.
 - Depending on client needs (explainability vs. accuracy), the model choice may vary.
+
 #### Revisiting Earlier Phases?
 - **No major gaps found**, but we could:
   - Drop low-importance features to simplify the model.
@@ -93,26 +101,33 @@ Now that we've settled on our models and findings, it is time to deliver the inf
 #### Objective
 - To help used car dealers **better understand what drives car prices**, and make smarter inventory and pricing decisions.
 #### Key Insights
+
 1. **Most Influential Factors on Price:**
    - **Year of Manufacture** : Newer cars retain higher prices.
    - **Mileage (`odometer`)** : Lower mileage = higher value.
    - **Transmission Type** : Uncommon transmissions impact pricing.
-   - **Drive Type & Engine Cylinders** :– Drive configuration and engine size contribute to value.
+   - **Fuel Type** : Fuel types show distinct trends.
+   - **Drive Type & Engine Cylinders & Body Type** :– Drive configuration and engine size and sedans/trucks contribute to value.
    - **Vehicle Condition** : As expected, better condition boosts value.
-   - **Fuel Type & Body Type** : Gas cars and sedans/trucks show distinct trends.
+
 2. **Price Prediction Accuracy:**
-   - Our best model (Random Forest) predicts car prices with an average error of **~$4,364.67**, which is significantly better than traditional models.
+   - Our best model (Random Forest) predicts car prices with an average error of **~$4451.24**, which is significantly better than traditional models.
    - This model accounts for non-linear trends and complex feature interactions.
 #### Model Summary
+
 - **Linear Regression**  
-  - RMSE: $7,477.78  
+  - RMSE: $8360.56
+
 - **Ridge Regression**  
-  - RMSE: $7,477.69  
+  - RMSE: $8360.61
+
 - **Lasso Regression**  
-  - RMSE: $7,477.71  
+  - RMSE: $8360.58
+
 - **Random Forest**  
-  - **RMSE: $4,364.67**
+  - **RMSE: $4451.24**
 #### Recommendations for Dealers
+
 - **Prioritize newer, low-mileage vehicles** : they retain more value.
-- **Consider condition and transmission when buying/selling** : these features impact pricing.
+- **Consider transmission, fuel and drive types when buying/selling** : these features impact pricing.
 - **Use this model as a pricing assistant** : to estimate fair market value.
